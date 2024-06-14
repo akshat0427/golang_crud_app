@@ -8,7 +8,4 @@ to test it out yourself , git clone this repo - git clone https://github.com/aks
 
 run final.go
 
-
-
-https://github.com/akshat0427/golang_crud_app/assets/100063366/8fea23d7-1a78-4efe-bbf1-b3346fd5c239
-
+![golang](https://github.com/akshat0427/golang_crud_app/assets/100063366/0c788952-67f5-476c-aa24-066fa16b7d2e)
