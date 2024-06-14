@@ -1,4 +1,4 @@
-a basic app that performs CRUD operations using golang and mongodb
+a basic app that performs CRUD operations using golang gin and mongodb
 
 
 
