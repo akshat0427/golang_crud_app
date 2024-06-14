@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        a{
+            font-size: 23px;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <!-- http://localhost:8080/submit -->
+    <h1 style="text-align: center;">Title &nbsp; &nbsp; &nbsp; 
+        <a href="/submit" target="_blank">add</a>
+    </h1>
+
+    <div style="text-align: center;">
+
+        {{range $v, $v2 := .Name}}
+    <li>{{$v2}} <a href="/del/{{index $.Id $v}}">delete</a>  &nbsp;  &nbsp; &nbsp; <a href="/update/{{index $.Id $v}}">update</a> </li>
+    {{end}}
+    
+    </div>
+    
+
+
+
+</body>
+</html>

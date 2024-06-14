@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        a{
+            font-size: 30px;
+            
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <h1 style="text-align:center;">crud app</h1>
+
+
+    
+
+    <br><br><br><br>
+    <div style="text-align: center;">
+        <a href="/submit" >create</a> &nbsp; &nbsp; <a href="/read" >read</a> &nbsp; &nbsp; <a href="/read" >update</a> &nbsp; &nbsp; <a href="/read">delete</a>
+    </div>
+    
+<script>
+// javascript funcion to redirect all links to second page
+
+    window.addEventListener('DOMContentLoaded', (event)=>{
+        const links = document.querySelectorAll("a");
+        links.forEach(link => {
+            link.setAttribute('target', "_blank")
+        })
+    })
+</script>
+</body>
+</html>
