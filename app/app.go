@@ -11,6 +11,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+func getMongoClient() (*mongo.Client, context.Context, context.CancelFunc, error) {
+	clientopts := options.Client().ApplyURI("mongodb://localhost:27017/")
+	ctx, cancel := context.WithCancel(context.Background())
+	client, err := mongo.Connect(ctx, clientopts)
+	return client, ctx, cancel, err
+}
+
 type N struct {
 	Name string
 	Data string
@@ -24,16 +31,16 @@ func St() string {
 
 func Ins(n1 string, s string) {
 
-	clientopts := options.Client().ApplyURI("mongodb://localhost:27017/")
+	client, ctx, cancel, err := getMongoClient()
 
-	client, err := mongo.Connect(context.Background(), clientopts)
 	if err != nil {
 		log.Fatal(err)
 
 	}
 
+	defer cancel()
 	defer func() {
-		if err := client.Disconnect(context.Background()); err != nil {
+		if err := client.Disconnect(ctx); err != nil {
 			log.Fatal(err)
 
 		}
@@ -48,16 +55,16 @@ func Ins(n1 string, s string) {
 }
 
 func Find(s2 string) string {
-	clientopts := options.Client().ApplyURI("mongodb://localhost:27017/")
+	client, ctx, cancel, err := getMongoClient()
 
-	client, err := mongo.Connect(context.Background(), clientopts)
 	if err != nil {
 		log.Fatal(err)
 
 	}
 
+	defer cancel()
 	defer func() {
-		if err := client.Disconnect(context.Background()); err != nil {
+		if err := client.Disconnect(ctx); err != nil {
 			log.Fatal(err)
 
 		}
@@ -74,25 +81,21 @@ func Find(s2 string) string {
 	var res map[string]string
 	collection2.FindOne(context.Background(), filter).Decode(&res)
 
-
 	return res["name"]
-
-
 
 }
 
 func Update(f string, u string) {
+	client, ctx, cancel, err := getMongoClient()
 
-	clientopts := options.Client().ApplyURI("mongodb://localhost:27017/")
-
-	client, err := mongo.Connect(context.Background(), clientopts)
 	if err != nil {
 		log.Fatal(err)
 
 	}
 
+	defer cancel()
 	defer func() {
-		if err := client.Disconnect(context.Background()); err != nil {
+		if err := client.Disconnect(ctx); err != nil {
 			log.Fatal(err)
 
 		}
@@ -121,17 +124,16 @@ func Update(f string, u string) {
 }
 
 func DeleteCollection(s5 string) {
+	client, ctx, cancel, err := getMongoClient()
 
-	clientopts := options.Client().ApplyURI("mongodb://localhost:27017/")
-
-	client, err := mongo.Connect(context.Background(), clientopts)
 	if err != nil {
 		log.Fatal(err)
 
 	}
 
+	defer cancel()
 	defer func() {
-		if err := client.Disconnect(context.Background()); err != nil {
+		if err := client.Disconnect(ctx); err != nil {
 			log.Fatal(err)
 
 		}
@@ -149,16 +151,16 @@ func DeleteCollection(s5 string) {
 
 func DropDocument(arg string) {
 
-	clientopts := options.Client().ApplyURI("mongodb://localhost:27017/")
+	client, ctx, cancel, err := getMongoClient()
 
-	client, err := mongo.Connect(context.Background(), clientopts)
 	if err != nil {
 		log.Fatal(err)
 
 	}
 
+	defer cancel()
 	defer func() {
-		if err := client.Disconnect(context.Background()); err != nil {
+		if err := client.Disconnect(ctx); err != nil {
 			log.Fatal(err)
 
 		}
@@ -176,7 +178,6 @@ func DropDocument(arg string) {
 
 	collection2.DeleteOne(context.Background(), filter2)
 
-
 	print("dropped the document")
 
 	// fmt.Println(res2["data"])
@@ -190,25 +191,23 @@ type Item struct {
 
 func PrintCollection() ([]string, []string) {
 
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	client, ctx, cancel, err := getMongoClient()
 
-	
-	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
 		log.Fatal(err)
+
 	}
 
-	
+	defer cancel()
 	defer func() {
-		if err = client.Disconnect(context.Background()); err != nil {
+		if err := client.Disconnect(ctx); err != nil {
 			log.Fatal(err)
+
 		}
 	}()
 
-	
 	collection := client.Database("test").Collection("crud")
 
-	
 	cursor, err := collection.Find(context.Background(), bson.M{})
 	if err != nil {
 		log.Fatal(err)
@@ -218,7 +217,6 @@ func PrintCollection() ([]string, []string) {
 	name := []string{}
 	id_ := []string{}
 
-	
 	for cursor.Next(context.Background()) {
 		var result map[string]string
 		if err := cursor.Decode(&result); err != nil {
@@ -230,7 +228,6 @@ func PrintCollection() ([]string, []string) {
 
 	}
 
-	
 	if err := cursor.Err(); err != nil {
 		log.Fatal(err)
 	}
